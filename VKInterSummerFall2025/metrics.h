@@ -1,38 +1,37 @@
 #pragma once
 
 #include "string"
+#include "vector"
+#include "filewriting.h"
 
 using namespace std;
 
 namespace mtr
 {
 
-	class Metric
+	class BaseMtr
 	{
 	protected:
 		string name;
 
-		Metric(string name);
-
+		BaseMtr(string name);
 	public:
-		string getName() const noexcept;
-		virtual double metric() const = 0;
-		virtual void measure(int val) = 0;
-
+		virtual const string getName() const noexcept=0;
 	};
 
-
-	class CPULoad : public Metric
+	template<class T>
+	class Metric : public BaseMtr
 	{
-		static int coresloaded;
-		static int timepassed;
-		
-		int N;
-	public:
-		CPULoad(string name, int N);
+	protected:
+		T value;
 
-		double metric() const;
-		void measure(int val);
+	public:
+		Metric(string name);
+
+		const string getName() const noexcept;
+		const T getValue() const noexcept;
+
+		void setValue(T value);
 
 	};
 

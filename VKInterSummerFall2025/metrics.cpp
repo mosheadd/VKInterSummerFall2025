@@ -4,22 +4,34 @@
 namespace mtr
 {
 
-	Metric::Metric(string name) : name(name) {};
 
-	string Metric::getName() const noexcept {
+	BaseMtr::BaseMtr(string name) : name(name)
+	{
+	}
+
+	template<class T>
+	Metric<T>::Metric(string name) : BaseMtr(name)
+	{
+		cout << "Metric created\n";
+	}
+
+	template<class T>
+	const string Metric<T>::getName() const noexcept
+	{
 		return name;
 	}
 
-	CPULoad::CPULoad(string name, int N) : Metric(name), N(N) {};
-
-	double CPULoad::metric() const {
-		return (double)coresloaded / (double)timepassed;
-	}
-
-	void CPULoad::measure(int val)
+	template<class T>
+	const T Metric<T>::getValue() const noexcept
 	{
-		coresloaded += val;
-		timepassed++;
+		return value;
 	}
+
+	template<class T>
+	void Metric<T>::setValue(T value)
+	{
+		this->value = value;
+	}
+
 
 }
