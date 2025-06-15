@@ -2,8 +2,12 @@
 #include "iostream"
 #include "fstream"
 #include "vector"
-#include "metrics.h"
+#include "collection.h"
+#include "chrono"
+#include "iomanip"
+#include "ctime"
 
+using namespace std::chrono;
 using namespace std;
 
 
@@ -20,7 +24,7 @@ namespace mtr
 		Writer(string filepath);
 
 		void changeFilepath(string filepath);
-		void write(const vector<unique_ptr<BaseMtr>>& metrics);
+		void write(const Metricollection& coll);
 
 	};
 
