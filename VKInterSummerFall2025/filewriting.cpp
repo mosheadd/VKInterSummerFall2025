@@ -3,6 +3,7 @@
 
 namespace mtr
 {
+	Writer::Writer() : filepath("default.txt") {}
 	Writer::Writer(string filepath) : filepath(filepath) {}
 
 	void Writer::changeFilepath(string filepath)

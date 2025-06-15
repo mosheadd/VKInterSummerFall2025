@@ -21,6 +21,7 @@ namespace mtr
 		ofstream file;
 
 	public:
+		Writer();
 		Writer(string filepath);
 
 		void changeFilepath(string filepath);
