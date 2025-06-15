@@ -18,16 +18,17 @@ void help()
 	cout << "'--help' or '-h' for help\n";
 	cout << "'--one' or '-o' for example number one\n";
 	cout << "'--two' or '-t' for example number two\n";
+	cout << "write path to a file after '-o' or '-t', default is 'example1.txt' and 'example2.txt'\n";
 }
 
-void example1()
+void example1(string filepath="example1.txt")
 {
 
 	mtr::Metricollection coll;
 	coll.addMetric("CPULoad", 0.0);
 	coll.addMetric("HTTP requests RPS", 0);
 
-	mtr::Writer writer("example1.txt");
+	mtr::Writer writer(filepath);
 	writer.write(coll);
 	Sleep(2000);
 
@@ -40,6 +41,8 @@ void example1()
 	coll.setMetricVal("HTTP requests RPS", 30);
 	writer.write(coll);
 
+	cout << "The output is successfully written in " << filepath << endl;
+
 }
 
 void ex2write(mtr::Metricollection& coll, mtr::Writer& writer, int c1, int c2, float cpu_us)
@@ -50,7 +53,7 @@ void ex2write(mtr::Metricollection& coll, mtr::Writer& writer, int c1, int c2, f
 	writer.write(coll);
 }
 
-void example2()
+void example2(string filepath = "example2.txt")
 {
 
 	mtr::Metricollection coll;
@@ -58,7 +61,7 @@ void example2()
 	coll.addMetric("Core1Temp", 0);
 	coll.addMetric("CPU_Usage", 0.f);
 
-	mtr::Writer writer("example2.txt");
+	mtr::Writer writer(filepath);
 	writer.write(coll);
 
 	ex2write(coll, writer, 31, 28, 4.4);
@@ -76,22 +79,52 @@ void example2()
 	ex2write(coll, writer, 45, 49, 15.6);
 	Sleep(1000);
 
+	cout << "The output is successfully written in " << filepath << endl;
+
 }
 
 int main(int argc, char* argv[])
 {
 	
+	cout << argc << endl;
+
 	if (argc == 1)
 		bydefault();
 	else
 	{
-		string arg = argv[1];
-		if (arg == "-h" || arg == "--help")
-			help();
-		else if (arg == "-o" || arg == "--one")
-			example1();
-		else if (arg == "-t" || arg == "--two")
-			example2();
+
+		try
+		{
+			string arg = argv[1];
+			if (arg == "-h" || arg == "--help")
+				help();
+			else if (arg == "-o" || arg == "--one")
+			{
+				if (argc > 2)
+				{
+					string filepath = argv[2];
+					example1(filepath);
+				}
+				else
+					example1();
+			}
+			else if (arg == "-t" || arg == "--two")
+			{
+				if (argc > 2)
+				{
+					string filepath = argv[2];
+					example2(filepath);
+				}
+				else
+					example2();
+			}
+		}
+		catch (const exception& e) {
+			cout << e.what();
+		}
+		catch (...) {
+			cout << "unknown error\n";
+		}
 	}
 	
 	return 0;
